@@ -1,8 +1,16 @@
 import { FileSystem } from "./file-system";
 const fs = new FileSystem();
 
-const [operation, ...args] = process.argv.slice(2);
-executeOperation(operation, args);
+const commands = process.argv.slice(2);
+
+commands.forEach((command) => {
+    const [operation, ...args] = command.split(' ');
+    try {
+        executeOperation(operation, args);
+    } catch (e) {
+        console.error(e.message)
+    }
+});
 
 function executeOperation(operation: string, args: string[]) {
     switch (operation) {
@@ -15,6 +23,6 @@ function executeOperation(operation: string, args: string[]) {
         case 'LIST':
             fs.list();
         default:
-            throw new Error('Not a valid file system operation');
+            throw new Error(`${operation} is not a valid file system operation`);
     }
 }
