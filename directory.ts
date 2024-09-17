@@ -7,11 +7,18 @@ export class Directory {
         this.children = new Map();
     }
 
-    addChild(directoryName) {
-        this.children.set(directoryName, new Directory(directoryName));
+    createChild(directoryName: string): Directory {
+        const newDirectory = new Directory(directoryName);
+        this.children.set(directoryName, newDirectory);
+
+        return newDirectory;
     }
 
-    deleteChild(directoryName) {
+    insertChild(directory: Directory) {
+        this.children.set(directory.name, directory);
+    }
+
+    deleteChild(directoryName: string) {
         const deleted = this.children.delete(directoryName);
 
         if (!deleted) {

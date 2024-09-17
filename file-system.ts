@@ -14,8 +14,21 @@ export class FileSystem {
     create(path: string) {
         console.log(`CREATE ${path}`);
 
-        // TODO: similar to the find, iterate over the child directories
-        // if not found create at that level and continue recursively creating from there
+        const pathDirectories = path.split('/');
+
+        let currentDirectory = this.root;
+
+        for (let i = 0; i < pathDirectories.length; i++) {
+            if (currentDirectory.children.has(pathDirectories[i])) {
+                const foundDirectory = currentDirectory.children.get(pathDirectories[i]);
+
+                if (!foundDirectory) {
+                    currentDirectory = currentDirectory.createChild(pathDirectories[i]);
+                } else {
+                    currentDirectory = foundDirectory;
+                }
+            }
+        }
     }
 
     /**
@@ -29,7 +42,12 @@ export class FileSystem {
         const destinationDirectory = this.findDirectory(destinationPath);
         const directoryToMove = this.findDirectory(sourcePath);
 
-        // TODO: get the parent directory so we can add the directory to move to it as a child
+        const parentDirectoryPath = sourcePath.split('/').slice(0, -1).join('/');
+
+        const parentDirectory = this.findDirectory(parentDirectoryPath);
+        parentDirectory.deleteChild(directoryToMove.name);
+
+        destinationDirectory.insertChild(directoryToMove);
     }
 
     /**
@@ -43,6 +61,10 @@ export class FileSystem {
         const directoryToDelete = path.split('/').pop();
 
         try {
+            if (!directoryToDelete) {
+                throw new Error('no directory to delete');
+            }
+
             const parent = this.findDirectory(pathParts.join('/'));
             parent.deleteChild(directoryToDelete);
         } catch(e) {
