@@ -4,8 +4,9 @@
   "description": "CLI tool to simulate a file system directory tree",
   "main": "index.js",
   "scripts": {
-    "start": "npm run compile && node index.js",
-    "compile": "tsc index.ts",
+    "start": "npm run compile && cd build node index.js",
+    "build": "tsc index.ts",
+    "lint": "npx eslint .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Rob LaCagnina",
