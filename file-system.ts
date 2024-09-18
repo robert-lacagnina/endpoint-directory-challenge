@@ -55,7 +55,7 @@ export class FileSystem {
         console.log(`DELETE ${path}`);
 
         const pathParts = path.split('/');
-        const directoryToDelete = path.split('/').pop();
+        const directoryToDelete = pathParts.pop();
 
         try {
             if (!directoryToDelete) {
@@ -66,7 +66,7 @@ export class FileSystem {
             parent.deleteChild(directoryToDelete);
         } catch(e) {
             const { message: errorReason } = e;
-            throw new Error(`Cannot delete ${path} - ${errorReason}}`)
+            throw new Error(`Cannot delete ${path} - ${errorReason}`)
         }
     }
 
