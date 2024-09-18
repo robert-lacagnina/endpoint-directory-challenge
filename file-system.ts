@@ -18,17 +18,14 @@ export class FileSystem {
 
         let currentDirectory = this.root;
 
-        for (let i = 0; i < pathDirectories.length; i++) {
-            if (currentDirectory.children.has(pathDirectories[i])) {
-                const foundDirectory = currentDirectory.children.get(pathDirectories[i]);
+        pathDirectories.forEach((pathPart) => {
+            let nextDirectory = currentDirectory.children.get(pathPart);
+            if (!nextDirectory) {
+                nextDirectory = currentDirectory.createChild(pathPart);
+            } 
 
-                if (!foundDirectory) {
-                    currentDirectory = currentDirectory.createChild(pathDirectories[i]);
-                } else {
-                    currentDirectory = foundDirectory;
-                }
-            }
-        }
+            currentDirectory = nextDirectory;
+        });
     }
 
     /**

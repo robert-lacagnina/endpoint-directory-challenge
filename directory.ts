@@ -30,7 +30,7 @@ export class Directory {
         const indenation = ' '.repeat(level);
         this.children.forEach((child) => {
             console.log(`${indenation}${child.name}`);
-            child.listContents(level++);
+            child.listContents(level + 1);
         });
     }
 }
